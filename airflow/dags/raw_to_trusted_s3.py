@@ -25,7 +25,7 @@ args = getResolvedOptions(sys.argv, ['JOB_NAME'])
 
 # Configurações do AWS S3
 aws_access_key = "TESTEKEY"
-aws_secret_key = "TESTEPWD"
+aws_secret_key = "TESTEPWD" 
 aws_region = "us-east-1"
 
 # Configurações do S3
