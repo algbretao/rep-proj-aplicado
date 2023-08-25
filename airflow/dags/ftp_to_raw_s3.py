@@ -46,7 +46,7 @@ s3 = boto3.client('s3')
 # Diretório temporário
 temp_dir = tempfile.mkdtemp()
 
-# Loop para baixar e enviar os arquivos do FTP para o S3
+# Loop para baixar e enviar os arquivos do FTP para o S3 
 for file in files:
     file_path = os.path.join(ftp_path, file)  # Caminho completo no FTP
     local_file_path = os.path.join(temp_dir, file)  # Caminho local temporário
