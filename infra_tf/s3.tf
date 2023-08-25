@@ -16,7 +16,7 @@ resource "aws_s3_bucket_acl" "datalake_acl" {
 
   bucket = aws_s3_bucket.datalake.id
   acl    = "private"
-} 
+}
 
 # Configurações de rules do bucket criado.
 resource "aws_s3_bucket_server_side_encryption_configuration" "datalake-configuration" {

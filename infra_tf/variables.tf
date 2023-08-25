@@ -27,7 +27,7 @@ variable "glue_job_file_mapping" {
     "glue_job_raw_to_trusted.py"     = "raw_to_trusted_s3.py",
     "glue_job_trusted_to_refined.py" = "trusted_to_refined_s3.py",
   }
-} 
+}
 
 variable "glue_key_path" {
   default = "glue-code/pyspark/"
