@@ -12,7 +12,7 @@ from awsglue.job import Job
 from pyspark.sql import functions as f
 from pyspark.sql import SparkSession
 
-## @params: [JOB_NAME] 
+## @params: [JOB_NAME]
 args = getResolvedOptions(sys.argv, ['JOB_NAME'])
 sc = SparkContext()
 glueContext = GlueContext(sc)
