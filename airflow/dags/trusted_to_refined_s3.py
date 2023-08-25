@@ -5,12 +5,13 @@ from botocore.exceptions import NoCredentialsError
 import tempfile
 import datetime
 from pyspark.context import SparkContext
+from pyspark.sql import functions as f
+from pyspark.sql import SparkSession
+from py4j.java_gateway import java_import
 from awsglue.transforms import *
 from awsglue.utils import getResolvedOptions
 from awsglue.context import GlueContext
 from awsglue.job import Job
-from pyspark.sql import functions as f
-from pyspark.sql import SparkSession
 
 ## @params: [JOB_NAME] 
 args = getResolvedOptions(sys.argv, ['JOB_NAME'])
@@ -20,6 +21,8 @@ spark = glueContext.spark_session
 job = Job(glueContext)
 job.init(args['JOB_NAME'], args)
 job.commit()
+
+java_import(spark._sc._jvm, "org.apache.spark.sql.api.python.*")
 
 # rais = (spark.read
 # .format("csv")

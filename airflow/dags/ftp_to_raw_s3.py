@@ -7,12 +7,12 @@ from botocore.exceptions import NoCredentialsError
 import tempfile
 import datetime
 from pyspark.context import SparkContext
+from pyspark.sql import functions as f
+from pyspark.sql import SparkSession
 from awsglue.transforms import *
 from awsglue.utils import getResolvedOptions
 from awsglue.context import GlueContext
 from awsglue.job import Job
-from pyspark.sql import functions as f
-from pyspark.sql import SparkSession
 
 ## @params: [JOB_NAME] 
 args = getResolvedOptions(sys.argv, ['JOB_NAME'])
@@ -89,3 +89,5 @@ for root, dirs, files in os.walk(temp_dir, topdown=False):
         os.rmdir(os.path.join(root, name))
 os.rmdir(temp_dir)
 ftp.quit()
+
+job.commit() # Apagar se der erro
