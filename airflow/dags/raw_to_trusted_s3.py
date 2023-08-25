@@ -24,8 +24,8 @@ spark = glueContext.spark_session
 args = getResolvedOptions(sys.argv, ['JOB_NAME'])
 
 # Configurações do AWS S3
-aws_access_key = "AKIAWSD6S7NLBI4OU3X2"
-aws_secret_key = "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"
+aws_access_key = "TESTEKEY"
+aws_secret_key = "TESTEPWD"
 aws_region = "us-east-1"
 
 # Configurações do S3
