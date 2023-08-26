@@ -5,7 +5,7 @@ name: Deploy
       - master
 jobs:
   deploy:
-    name: Deploy to Datalake
+    name: Deploy IaC
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,11 +16,9 @@ jobs:
       - name: Hashicorp - Setup Terraform
         uses: hashicorp/setup-terraform@v1.2.1
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: '${{ secrets.AWS_ACCESS_KEY_ID }}'
-          aws-secret-access-key: '${{ secrets.AWS_SECCRET_ACCESS_KEY }}'
-          aws-region: us-east-2
+        run: |
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECCRET_ACCESS_KEY }}" >> $GITHUB_ENV
       - name: IaC Apply
         env:
           COMMAND_IAC: terraform
