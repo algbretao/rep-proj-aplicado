@@ -45,6 +45,8 @@ try:
     input_path = f"s3://{input_bucket}/{input_prefix}"
     df = spark.read.parquet(input_path)
 
+    df.show(5)
+
     # Aplicar a UDF aos campos de documentos
     hash_udf = udf(hash_document, StringType())
     df_with_hashed_fields = df.withColumn("Registro_ANS_Hashed", hash_udf(df["Registro_ANS"])) \
@@ -52,6 +54,8 @@ try:
 
     # Drop dos campos originais de documentos no DataFrame
     df_with_hashed_fields = df_with_hashed_fields.drop("Registro_ANS", "Numero_Demanda")
+
+    df_with_hashed_fields.show(5)
 
     # Aplicar UDF ao campo de razão social
     mask_names_udf = udf(mask_name, StringType())
@@ -63,6 +67,8 @@ try:
     # Salvar o DataFrame no formato Parquet no S3, particionado por Ano_Atendimento e Mes_Atendimento
     output_path = f"s3://{output_bucket}/{output_prefix}"
     df_anonymized.write.partitionBy("Ano_Atendimento", "Mes_Atendimento").parquet(output_path, mode="overwrite")
+
+    df_anonymized.show(5)
     
     # Print para indicar que o processamento foi concluído e o arquivo foi salvo
     print("Processamento concluído e arquivo salvo na pasta refined.")
