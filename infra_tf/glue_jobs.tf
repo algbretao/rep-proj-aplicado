@@ -19,7 +19,7 @@ resource "aws_glue_job" "glue_jobs" {
 
 # Cria o Crawler para indexar os dados em catálogos de dados do AWS Glue.
 # Necessário dar um 'run' no Crowler através do console AWS.
-resource "aws_glue_crawler" "glue_crawler_proj_aplic" {
+resource "aws_glue_crawler" "glue_crawler_pa" {
   depends_on    = [aws_s3_bucket.datalake]
   database_name = var.database_name
   name          = var.glue_crawler_name
