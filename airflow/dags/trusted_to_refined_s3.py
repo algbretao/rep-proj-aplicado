@@ -55,7 +55,7 @@ try:
 
     # Aplicar UDF ao campo de razão social
     mask_names_udf = udf(mask_name, StringType())
-    df_anonymized = df_with_hashed_fields.withColumn("Razao_Social_Anonimizada", mask_names_udf(df_with_hashed_fields["Razao_Social"]))
+    df_anonymized = df_with_hashed_fields.withColumn("Razao_Social_Anonymized", mask_names_udf(df_with_hashed_fields["Razao_Social"]))
 
     # Drop do campo original de razão social no DataFrame
     df_anonymized = df_anonymized.drop("Razao_Social")
