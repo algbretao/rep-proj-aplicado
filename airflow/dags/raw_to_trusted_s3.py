@@ -9,7 +9,7 @@ from pyspark.sql import functions as f
 
 # Inicializar o contexto do Glue
 args = getResolvedOptions(sys.argv, ['JOB_NAME'])
-sc = SparkContext() 
+sc = SparkContext()
 glueContext = GlueContext(sc)
 spark = glueContext.spark_session
 job = Job(glueContext)
