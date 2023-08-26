@@ -27,7 +27,7 @@ try:
     df = spark.read.parquet(input_path)
 
     # Fazer transformações necessárias no DataFrame
-    # .....
+    # ......
 
     # Salvar o DataFrame no formato Parquet no S3, particionado por Ano_Atendimento e Mes_Atendimento
     output_path = f"s3://{output_bucket}/{output_prefix}"
