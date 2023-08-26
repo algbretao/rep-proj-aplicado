@@ -26,8 +26,6 @@ try:
     input_path = f"s3://{input_bucket}/{input_prefix}"
     df = spark.read.option("header", "true").option("delimiter", ";").option("encoding", "ISO-8859-1").csv(input_path)
 
-    # Transformações necessárias no DataFrame
-
     # Renomear as colunas para nomes válidos
     new_column_names = [
         "Registro_ANS", "Razao_Social", "Beneficiarios", "Numero_Demanda",

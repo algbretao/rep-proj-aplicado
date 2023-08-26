@@ -78,8 +78,7 @@ for file in files:
         except NoCredentialsError:
             print('Credenciais do S3 não configuradas corretamente.')
 
-    # Remover o arquivo local temporário
-    os.remove(local_file_path)
+    os.remove(local_file_path) # Remover o arquivo local temporário
 
 # Remover o diretório temporário e fechar a conexão FTP
 for root, dirs, files in os.walk(temp_dir, topdown=False):
