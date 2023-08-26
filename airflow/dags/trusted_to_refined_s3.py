@@ -23,7 +23,7 @@ job.init(args['JOB_NAME'], args)
 input_bucket = "datalake-pa-tf-prd"
 input_prefix = "trusted/"
 output_bucket = "datalake-pa-tf-prd"
-output_prefix = "refined/"
+output_prefix = "refined/pa/"
 
 # Hashing para documentos
 def hash_document(number):
@@ -36,9 +36,11 @@ def hash_document(number):
 # Função para anonimizar nomes
 def mask_name(razao_social):
     words = razao_social.split(" ")
-    for i in range(len(words)):
-        words[i] = "*" * random.randint(1, len(words[i])) + words[i][random.randint(2, len(words[i]) - 2)] + "*" * random.randint(1, len(words[i]))
-    return " ".join(words)
+    masked_words = []
+    for word in words:
+        masked_word = "".join(random.choice("*") if i % 5 == 0 else char for i, char in enumerate(word))
+        masked_words.append(masked_word)
+    return " ".join(masked_words)
 
 try:
     # Ler o arquivo parquet da trusted
@@ -62,8 +64,7 @@ try:
 
     # Salvar o DataFrame no formato Parquet no S3, particionado por Ano_Atendimento e Mes_Atendimento
     output_path = f"s3://{output_bucket}/{output_prefix}"
-    # df_anonymized.write.partitionBy("Ano_Atendimento", "Mes_Atendimento").parquet(output_path, mode="overwrite")
-    df_with_hashed_fields.write.partitionBy("Ano_Atendimento", "Mes_Atendimento").parquet(output_path, mode="overwrite")
+    df_anonymized.write.partitionBy("Ano_Atendimento", "Mes_Atendimento").parquet(output_path, mode="overwrite")
 
     # Print para indicar que o processamento foi concluído e o arquivo foi salvo
     print("Processamento concluído e arquivo salvo na pasta refined.")
