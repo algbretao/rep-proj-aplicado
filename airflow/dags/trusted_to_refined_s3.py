@@ -63,7 +63,7 @@ try:
     # Salvar o DataFrame no formato Parquet no S3, particionado por Ano_Atendimento e Mes_Atendimento
     output_path = f"s3://{output_bucket}/{output_prefix}"
     # df_anonymized.write.partitionBy("Ano_Atendimento", "Mes_Atendimento").parquet(output_path, mode="overwrite")
-    df.write.partitionBy("Ano_Atendimento", "Mes_Atendimento").parquet(output_path, mode="overwrite")
+    df_with_hashed_fields.write.partitionBy("Ano_Atendimento", "Mes_Atendimento").parquet(output_path, mode="overwrite")
 
     # Print para indicar que o processamento foi concluído e o arquivo foi salvo
     print("Processamento concluído e arquivo salvo na pasta refined.")
