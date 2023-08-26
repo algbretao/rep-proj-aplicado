@@ -40,7 +40,7 @@ ftp.login(ftp_username, ftp_password)
 ftp.cwd(ftp_path)
 files = ftp.nlst()
 
-# Configurações do S3
+# Configurações do S3 
 s3 = boto3.client('s3')
 
 # Diretório temporário
