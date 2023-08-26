@@ -25,7 +25,7 @@ job.commit()
 
 # Configurações do S3
 s3_bucket_name = 'datalake-pa-tf-prd'
-s3_folder_path = 'raw/'
+s3_folder_path = 'raw/' 
 
 # Configurações do FTP (salvar no git posteriormente)
 ftp_client_name = 'cliente1'  # Nome do cliente
