@@ -34,7 +34,7 @@ variable "glue_key_path" {
 }
 
 variable "database_name" {
-  default = "database-proj_apl"
+  default = "database-proj-apl"
 }
 
 variable "glue_crawler_name" {
