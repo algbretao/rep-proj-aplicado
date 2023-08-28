@@ -9,4 +9,13 @@ terraform {
     key    = "state/pa/terraform.tfstate"
     region = "us-east-1"
   }
-} 
+}
+
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.14.0"
+    }
+  }
+}

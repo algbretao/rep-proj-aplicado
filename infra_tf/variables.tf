@@ -40,3 +40,30 @@ variable "database_name" {
 variable "glue_crawler_name" {
   default = "glue_crawler_proj_apl"
 }
+
+variable "cluster_name_mwaa" {
+  default = "mwaa-cluster-airflow"
+}
+
+variable "cluster_size_mwaa" {
+  default = "mw1.small"
+}
+
+variable "dag_s3_path_mwaa" {
+  default = "dags"
+}
+
+variable "security_group_mwaa" {
+  type    = list(string)
+  default = ["sg-0785f73b47ebfed05"]
+}
+
+
+variable "subnets_mwaa" {
+  type    = list(string)
+  default = ["subnet-0101f7386c75f0e7d", "subnet-0dac3d0bdda62b4c9"]
+}
+
+variable "source_bucket_arn" {
+  default = "arn:aws:s3:::datalake-pa-tf-prd"
+}
