@@ -46,26 +46,24 @@ variable "cluster_name_mwaa" {
 }
 
 variable "cluster_size_mwaa" {
-  default = "small"
-}
-
-variable "executor_type_mwaa" {
-  default = "local"
+  default = "mw1.small"
 }
 
 variable "dag_s3_path_mwaa" {
   default = "dags"
 }
 
-variable "vpc_mwaa" {
-  default = "vpc-01362a5a046cb99c8"  
+variable "security_group_mwaa" {
+  type    = list(string)
+  default = ["sg-0785f73b47ebfed05"]
 }
 
+
 variable "subnets_mwaa" {
-  type = list(string)
+  type    = list(string)
   default = ["subnet-0101f7386c75f0e7d", "subnet-0dac3d0bdda62b4c9"]
 }
 
-variable "kms_key_id_mwaa" {
-  default = "arn:aws:kms:us-east-1:451237051222:key/daf6c528-3766-4b5b-a3ba-b6ece535dfc6"
+variable "source_bucket_arn" {
+  default = "arn:aws:s3:::datalake-pa-tf-prd"
 }
