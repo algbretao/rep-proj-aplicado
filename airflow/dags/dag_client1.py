@@ -1,6 +1,5 @@
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
-from airflow.sensors.aws_base_sensor import AwsBaseSensor
 from datetime import datetime
 import boto3
 
@@ -34,21 +33,17 @@ task_ftp_to_raw = PythonOperator(
     dag=dag,
 )
 
-task_raw_to_trusted = AwsBaseSensor(
-    task_id='wait_for_glue_job_raw_to_trusted',
-    job_name='glue_job_raw_to_trusted',
-    timeout=600,  # Tempo limite de espera
-    poke_interval=60,  # Intervalo entre verificações
-    aws_conn_id='aws_default',  # Conexão AWS definida no Airflow
+task_raw_to_trusted = PythonOperator(
+    task_id='execute_glue_job_raw_to_trusted',
+    python_callable=execute_glue_job_raw_to_trusted,
+    provide_context=True,
     dag=dag,
 )
 
-task_trusted_to_refined = AwsBaseSensor(
-    task_id='wait_for_glue_job_trusted_to_refined',
-    job_name='glue_job_trusted_to_refined',
-    timeout=600,  # Tempo limite de espera
-    poke_interval=60,  # Intervalo entre verificações
-    aws_conn_id='aws_default',  # Conexão AWS definida no Airflow
+task_trusted_to_refined = PythonOperator(
+    task_id='execute_glue_job_trusted_to_refined',
+    python_callable=execute_glue_job_trusted_to_refined,
+    provide_context=True,
     dag=dag,
 )
 
