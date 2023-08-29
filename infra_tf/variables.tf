@@ -58,6 +58,9 @@ variable "security_group_mwaa" {
   default = ["sg-0785f73b47ebfed05"]
 }
 
+variable "log_level_mwaa" {
+  default = "INFO"
+}
 
 variable "subnets_mwaa" {
   type    = list(string)

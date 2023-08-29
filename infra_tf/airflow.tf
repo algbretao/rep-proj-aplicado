@@ -12,19 +12,24 @@ resource "aws_mwaa_environment" "mwaa_cluster_airflow" {
 
   logging_configuration {
     dag_processing_logs {
-      enabled = true # Habilitar a coleta de logs para processamento de DAGs
+      enabled   = true # Habilitar a coleta de logs para processamento de DAGs
+      log_level = var.log_level_mwaa
     }
     scheduler_logs {
-      enabled = true # Habilitar a coleta de logs para os agendadores
+      enabled   = true # Habilitar a coleta de logs para os agendadores
+      log_level = var.log_level_mwaa
     }
     task_logs {
-      enabled = true # Habilitar a coleta de logs para tarefas DAG
+      enabled   = true # Habilitar a coleta de logs para tarefas DAG
+      log_level = var.log_level_mwaa
     }
     webserver_logs {
-      enabled = true # Habilitar a coleta de logs para os servidores web
+      enabled   = true # Habilitar a coleta de logs para os servidores web
+      log_level = var.log_level_mwaa
     }
     worker_logs {
-      enabled = true # Habilitar a coleta de logs para os trabalhadores
+      enabled   = true # Habilitar a coleta de logs para os trabalhadores
+      log_level = var.log_level_mwaa
     }
   }
 }
