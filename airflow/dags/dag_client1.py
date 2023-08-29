@@ -1,6 +1,6 @@
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
-from airflow.providers.amazon.aws.transfers.gluejob import AwsGlueJobSensor
+from airflow.sensors.aws_glue_job import AwsGlueJobSensor
 from datetime import datetime
 import boto3
 
