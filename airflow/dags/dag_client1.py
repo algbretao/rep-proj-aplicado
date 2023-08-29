@@ -1,6 +1,6 @@
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
-from airflow.sensors.aws_glue_job import AwsGlueJobSensor
+from airflow.sensors.aws_base_sensor import AwsBaseSensor
 from datetime import datetime
 import boto3
 
@@ -34,21 +34,7 @@ task_ftp_to_raw = PythonOperator(
     dag=dag,
 )
 
-# task_raw_to_trusted = PythonOperator(
-#     task_id='execute_glue_job_raw_to_trusted',
-#     python_callable=execute_glue_job_raw_to_trusted,
-#     provide_context=True,
-#     dag=dag,
-# )
-
-# task_trusted_to_refined = PythonOperator(
-#     task_id='execute_glue_job_trusted_to_refined',
-#     python_callable=execute_glue_job_trusted_to_refined,
-#     provide_context=True,
-#     dag=dag,
-# )
-
-task_raw_to_trusted = AwsGlueJobSensor(
+task_raw_to_trusted = AwsBaseSensor(
     task_id='wait_for_glue_job_raw_to_trusted',
     job_name='glue_job_raw_to_trusted',
     timeout=600,  # Tempo limite de espera
@@ -57,7 +43,7 @@ task_raw_to_trusted = AwsGlueJobSensor(
     dag=dag,
 )
 
-task_trusted_to_refined = AwsGlueJobSensor(
+task_trusted_to_refined = AwsBaseSensor(
     task_id='wait_for_glue_job_trusted_to_refined',
     job_name='glue_job_trusted_to_refined',
     timeout=600,  # Tempo limite de espera
@@ -65,9 +51,6 @@ task_trusted_to_refined = AwsGlueJobSensor(
     aws_conn_id='aws_default',  # Conexão AWS definida no Airflow
     dag=dag,
 )
-
-# # Define a ordem das tarefas na sequência
-# task_ftp_to_raw >> task_raw_to_trusted >> task_trusted_to_refined
 
 # Define a ordem das tarefas na sequência usando CrossDependency
 task_ftp_to_raw.set_downstream(task_raw_to_trusted)
