@@ -48,5 +48,4 @@ task_trusted_to_refined = PythonOperator(
 )
 
 # Define a ordem das tarefas na sequência usando CrossDependency
-task_ftp_to_raw.set_downstream(task_raw_to_trusted)
-task_raw_to_trusted.set_downstream(task_trusted_to_refined)
+task_ftp_to_raw >> task_raw_to_trusted >> task_trusted_to_refined
