@@ -28,7 +28,7 @@ s3_bucket_name = 'datalake-pa-tf-prd'
 s3_folder_path = 'raw/'
 
 # Configurações do FTP (salvar no git posteriormente)
-ftp_client_name = 'cliente1'  # Nome do cliente
+ftp_client_name = 'client1'  # Nome do cliente
 ftp_server = 'dadosabertos.ans.gov.br'
 ftp_path = '/FTP/PDA/IGR/dados-gerais-das-reclamacoes'
 ftp_username = 'anonymous'
