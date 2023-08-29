@@ -1,9 +1,10 @@
 resource "aws_mwaa_environment" "mwaa_cluster_airflow" {
-  name               = var.cluster_name_mwaa
-  dag_s3_path        = var.dag_s3_path_mwaa
-  execution_role_arn = var.iam_arn
-  source_bucket_arn  = var.source_bucket_arn
-  environment_class  = var.cluster_size_mwaa
+  name                  = var.cluster_name_mwaa
+  dag_s3_path           = var.dag_s3_path_mwaa
+  execution_role_arn    = var.iam_arn
+  source_bucket_arn     = var.source_bucket_arn
+  environment_class     = var.cluster_size_mwaa
+  webserver_access_mode = var.webserver_access_mode
 
   network_configuration {
     security_group_ids = var.security_group_mwaa

@@ -7,7 +7,7 @@ resource "aws_glue_job" "glue_jobs" {
   timeout     = 2880
   command {
     # Path do bucket S3 onde está gravado o arquivo pyspark com o código do glue job a ser executado.
-    script_location = "s3://${var.bucket_name}/scripts/${each.value}"
+    script_location = "s3://${var.bucket_name}/glue/${each.value}"
     python_version  = "3"
   }
   execution_property {
