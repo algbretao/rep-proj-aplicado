@@ -11,6 +11,10 @@ resource "aws_mwaa_environment" "mwaa_cluster_airflow" {
     subnet_ids         = var.subnets_mwaa
   }
 
+  airflow_configuration_options = {
+    "webserver.warn_deployment_exposure" = "False"
+  }
+
   logging_configuration {
     dag_processing_logs {
       enabled   = true # Habilitar a coleta de logs para processamento de DAGs
