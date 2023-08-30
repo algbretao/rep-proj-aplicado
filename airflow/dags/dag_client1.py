@@ -36,7 +36,7 @@ def execute_glue_job_trusted_to_refined(**kwargs):
     wait_for_job_completion(job_name, run_id)
 
 # Definição da DAG
-dag = DAG('dag_etl_client1', schedule_interval=None, start_date=datetime(2023, 1, 1))
+dag = DAG('dag_etl_client1', schedule_interval='@daily', start_date=datetime(2023, 8, 1))
 
 # Tarefas (tasks) que executam os Glue Jobs
 task_ftp_to_raw = PythonOperator(
