@@ -50,6 +50,6 @@ task_trusted_to_refined = PythonOperator(
 # Define a ordem das tarefas na sequência com dependência
 task_ftp_to_raw >> task_raw_to_trusted >> task_trusted_to_refined
 
-# Define a dependência trigger_after_success
-task_raw_to_trusted.set_upstream(task_ftp_to_raw, trigger_after_success=True)
-task_trusted_to_refined.set_upstream(task_raw_to_trusted, trigger_after_success=True)
+# Define a dependência trigger_after_all_success das tarefas
+task_ftp_to_raw.set_trigger_rule('trigger_after_all_success')
+task_raw_to_trusted.set_trigger_rule('trigger_after_all_success')
