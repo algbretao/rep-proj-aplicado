@@ -14,7 +14,7 @@ def wait_for_job_completion(job_name, run_id):
         status = response['JobRun']['JobRunState']
         if status in ['SUCCEEDED', 'FAILED', 'STOPPED']:
             return status
-        time.sleep(30)  # Aguarde 30 segundos antes de verificar novamente
+        time.sleep(30)  # Aguarde 15 segundos antes de verificar novamente
 
 # Funções para execução dos Glue Jobs atualizadas
 def execute_glue_job_ftp_to_raw(**kwargs):
