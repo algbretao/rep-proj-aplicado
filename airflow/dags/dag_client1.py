@@ -2,25 +2,38 @@ from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime
 import boto3
+import time
 
 # Crie um cliente para o serviço AWS Glue
 glue_client = boto3.client('glue', region_name='us-east-1')  # Substitua pela sua região
 
-# Funções para execução dos Glue Jobs
+# Função para verificar o status do Glue Job
+def wait_for_job_completion(job_name, run_id):
+    while True:
+        response = glue_client.get_job_run(JobName=job_name, RunId=run_id)
+        status = response['JobRun']['JobRunState']
+        if status in ['SUCCEEDED', 'FAILED', 'STOPPED']:
+            return status
+        time.sleep(30)  # Aguarde 30 segundos antes de verificar novamente
+
+# Funções para execução dos Glue Jobs atualizadas
 def execute_glue_job_ftp_to_raw(**kwargs):
-    job_name = 'glue_job_ftp_to_raw'  # Nome do Glue Job
+    job_name = 'glue_job_ftp_to_raw'
     response = glue_client.start_job_run(JobName=job_name)
-    # Captura o ID da execução do job para monitoramento
+    run_id = response['JobRunId']
+    wait_for_job_completion(job_name, run_id)
 
 def execute_glue_job_raw_to_trusted(**kwargs):
-    job_name = 'glue_job_raw_to_trusted'  # Nome do Glue Job
+    job_name = 'glue_job_raw_to_trusted'
     response = glue_client.start_job_run(JobName=job_name)
-    # Captura o ID da execução do job para monitoramento
+    run_id = response['JobRunId']
+    wait_for_job_completion(job_name, run_id)
 
 def execute_glue_job_trusted_to_refined(**kwargs):
-    job_name = 'glue_job_trusted_to_refined'  # Nome do Glue Job
+    job_name = 'glue_job_trusted_to_refined'
     response = glue_client.start_job_run(JobName=job_name)
-    # Captura o ID da execução do job para monitoramento
+    run_id = response['JobRunId']
+    wait_for_job_completion(job_name, run_id)
 
 # Definição da DAG
 dag = DAG('dag_etl_client1', schedule_interval=None, start_date=datetime(2023, 1, 1))
@@ -47,8 +60,5 @@ task_trusted_to_refined = PythonOperator(
     dag=dag,
 )
 
-# Define a ordem das tarefas na sequência com dependência
-# task_ftp_to_raw >> task_raw_to_trusted >> task_trusted_to_refined
-
-task_ftp_to_raw >> task_raw_to_trusted
-task_raw_to_trusted >> task_trusted_to_refined
+# Define a ordem das tarefas na sequência
+task_ftp_to_raw >> task_raw_to_trusted >> task_trusted_to_refined
