@@ -1,6 +1,7 @@
 import sys
 import ftplib
 import os
+import json
 import boto3
 import zipfile
 from botocore.exceptions import NoCredentialsError
@@ -23,16 +24,36 @@ job = Job(glueContext)
 job.init(args['JOB_NAME'], args)
 job.commit()
 
+# # Configurações do FTP (salvar no git posteriormente)
+# ftp_client_name = 'client1'  # Nome do cliente
+# ftp_server = 'dadosabertos.ans.gov.br'
+# ftp_path = '/FTP/PDA/IGR/dados-gerais-das-reclamacoes'
+# ftp_username = 'anonymous'
+# ftp_password = ''
+
+# Função que retorna um Json com as credenciais do Secret Manager
+def get_secret(secret_name, region_name):
+    session = boto3.session.Session()
+    client = session.client(
+        service_name='secretsmanager',
+        region_name=region_name
+    )
+    get_secret_value_response = client.get_secret_value(SecretId=secret_name)
+    return json.loads(get_secret_value_response['SecretString'])
+
+# Recuperar segredos do AWS Secrets Manager
+secrets = get_secret('secret-client1', 'us-east-1')
+ftp_server = secrets['FTP_SERVER']
+ftp_path = secrets['FTP_PATH']
+ftp_username = secrets['FTP_USERNAME']
+ftp_password = secrets['FTP_PASSWORD']
+
+# Nome do cliente
+ftp_client_name = 'client1'  
+
 # Configurações do S3
 s3_bucket_name = 'datalake-pa-tf-prd'
 s3_folder_path = 'raw/'
-
-# Configurações do FTP (salvar no git posteriormente)
-ftp_client_name = 'client1'  # Nome do cliente
-ftp_server = 'dadosabertos.ans.gov.br'
-ftp_path = '/FTP/PDA/IGR/dados-gerais-das-reclamacoes'
-ftp_username = 'anonymous'
-ftp_password = ''
 
 # Conexão com o FTP
 ftp = ftplib.FTP(ftp_server)
