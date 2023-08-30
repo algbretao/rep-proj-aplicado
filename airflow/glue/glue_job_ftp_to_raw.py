@@ -8,21 +8,19 @@ import zipfile
 import tempfile
 import datetime
 from pyspark.context import SparkContext
-from pyspark.sql import functions as f
 from pyspark.sql import SparkSession
 from awsglue.transforms import *
 from awsglue.utils import getResolvedOptions
 from awsglue.context import GlueContext
 from awsglue.job import Job
 
-## @params: [JOB_NAME]
+# Inicializar o contexto do Glue
 args = getResolvedOptions(sys.argv, ['JOB_NAME'])
 sc = SparkContext()
 glueContext = GlueContext(sc)
 spark = glueContext.spark_session
 job = Job(glueContext)
 job.init(args['JOB_NAME'], args)
-job.commit()
 
 # Função para obter segredos do AWS Secrets Manager
 def get_secret(secret_name, region_name):
@@ -31,46 +29,28 @@ def get_secret(secret_name, region_name):
         service_name='secretsmanager',
         region_name=region_name
     )
-    try:
-        get_secret_value_response = client.get_secret_value(SecretId=secret_name)
-        return json.loads(get_secret_value_response['SecretString'])
-    except ClientError as e:
-        raise e  # Pode-se também adicionar logging ou outras ações aqui
+    get_secret_value_response = client.get_secret_value(SecretId=secret_name)
+    return json.loads(get_secret_value_response['SecretString'])
 
 # Recuperar segredos do AWS Secrets Manager
-try:
-    secrets = get_secret('secret-client1', 'us-east-1')
-    ftp_server = secrets['FTP_SERVER']
-    ftp_path = secrets['FTP_PATH']
-    ftp_username = secrets['FTP_USERNAME']
-    ftp_password = secrets['FTP_PASSWORD']
-except ClientError as e:
-    print(f"Erro ao recuperar segredo: {e}")
-    sys.exit(1)
+secrets = get_secret('secret-client1', 'us-east-1')
+ftp_server = secrets['FTP_SERVER']
+ftp_path = secrets['FTP_PATH']
+ftp_username = secrets['FTP_USERNAME']
+ftp_password = secrets['FTP_PASSWORD']
 
-# Nome do cliente
 ftp_client_name = 'client1'
-
-## @params: [JOB_NAME]
-args = getResolvedOptions(sys.argv, ['JOB_NAME'])
-sc = SparkContext()
-glueContext = GlueContext(sc)
-spark = glueContext.spark_session
-job = Job(glueContext)
-job.init(args['JOB_NAME'], args)
-job.commit()
 
 # Configurações do S3
 s3_bucket_name = 'datalake-pa-tf-prd'
 s3_folder_path = 'raw/'
 
-# Conexão com o FTP
+# Conexão com o servidor FTP
 ftp = ftplib.FTP(ftp_server)
 ftp.login(ftp_username, ftp_password)
 ftp.cwd(ftp_path)
 files = ftp.nlst()
 
-# Configurações do S3 
 s3 = boto3.client('s3')
 
 # Diretório temporário
